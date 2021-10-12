@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="422.0" prefWidth="667.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.views.main.MainViewController">
+   <children>
+      <TableView fx:id="usersTableView" layoutX="445.0" prefHeight="402.0" prefWidth="222.0">
+        <columns>
+          <TableColumn fx:id="usersTableColumn" editable="false" prefWidth="213.0" sortable="false" text="C1" />
+        </columns>
+      </TableView>
+      <TextArea fx:id="messageTextArea" editable="false" layoutX="10.0" layoutY="14.0" prefHeight="339.0" prefWidth="433.0" />
+      <TextField fx:id="messageTextField" layoutX="14.0" layoutY="354.0" prefHeight="46.0" prefWidth="332.0" />
+      <Button layoutX="364.0" layoutY="364.0" mnemonicParsing="false" onAction="#onSend" text="send" />
+   </children>
+</AnchorPane>
