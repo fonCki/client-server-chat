@@ -3,6 +3,7 @@ package client.views.main;
 import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
+import client.views.main.tools.TabList;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
@@ -21,25 +22,30 @@ public class MainViewController implements ViewController {
     ViewHandler viewHandler;
     MainViewModel mainViewModel;
 
-    @FXML private TextArea messageTextArea;
+    //@FXML private TextArea messageTextArea;
     @FXML private TextField messageTextField;
     @FXML private TableView<User> usersTableView;
     @FXML private TableColumn<String, User> usersTableColumn;
     @FXML private Button onSendButton;
 
-    @FXML TabPane tabPane;
-    @Override
+    @FXML private TabPane tabPane;
+    private TabList tabList = new TabList();
 
+
+    @Override
     public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver) {
-        tabPane = new TabPane();
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModelFactory.getMainViewModel();
         mainViewModel.loadOnlineUsers();
         usersTableView.setItems(mainViewModel.getUsers());
         usersTableColumn.setCellValueFactory(new PropertyValueFactory<>("nickName"));
-        messageTextArea.textProperty().bind(mainViewModel.messageProperty());
+
+     //   Tab allTab = new Tab("ALL");
+     //   tabPane.getTabs().add(new Tab("ALL"));
+       // messageTextArea.textProperty().bind(mainViewModel.messageProperty());
         onSendButton.disableProperty().bind(Bindings.isEmpty(messageTextField.textProperty()));
-        tabPane.setSide(Side.LEFT);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+
 
 
         stage.setTitle(mainViewModel.getIdentity().getNickName());
@@ -49,8 +55,18 @@ public class MainViewController implements ViewController {
             row.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getClickCount() == 2 && (!row.isEmpty())) {
                     User userSelected = row.getItem();
-                    if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID())))
-                        viewHandler.openPrivateView(userSelected);
+                    if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
+
+                        if (!(tabList.existTab(userSelected.getID()))) {
+                            tabList.addTab(userSelected);
+                            tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
+                        }
+                        tabList.getTab(userSelected.getID()).setOnCloseRequest( event -> {
+                            tabList.removeTab(userSelected.getID());
+
+                        });
+                        selectionModel.select(tabList.getTab(userSelected.getID()));
+                    }
                 }
             });
             return row;

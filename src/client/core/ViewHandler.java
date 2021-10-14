@@ -30,7 +30,7 @@ public class ViewHandler {
 
     public void openMainView(){
         //stage.setTitle("Main");
-        Scene scene = new Scene(getRoot("../views/main/Main.fxml", null));
+        Scene scene = new Scene(getRoot("../views/main/newMain.fxml", null));
         stage.setScene(scene);
         stage.show();
     }

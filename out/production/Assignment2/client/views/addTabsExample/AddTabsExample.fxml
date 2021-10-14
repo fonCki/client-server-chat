@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.views.addTabsExample.AddTabsController">
+    <center>
+        <TabPane fx:id="tabPane" />
+    </center>
+    <bottom>
+        <HBox alignment="center">
+            <Button text="Add tab" onAction="#addTab" />
+            <Button text="List tabs" onAction="#listTabs" />
+        </HBox>
+    </bottom>
+</BorderPane>
