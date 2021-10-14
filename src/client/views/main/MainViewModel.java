@@ -10,6 +10,7 @@ import shared.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainViewModel {
@@ -20,62 +21,58 @@ public class MainViewModel {
     public MainViewModel(MessageModel messageModel) {
         this.messageModel = messageModel;
         this.message = new SimpleStringProperty("");
-        //users = FXCollections.observableArrayList(new ArrayList<User>());
-        //loadOnlineUsers();
-        messageModel.addListener("USER_LIST_MODIFIED", this::onNewUser);
+        messageModel.addListener("USER_LIST_MODIFIED", this::onUserListModified);
         messageModel.addListener("NEW_MESSAGE", this::onNewMessage);
-     //   request = new SimpleStringProperty("");
-     //   reply = new SimpleStringProperty("");
     }
 
     private void onNewMessage(PropertyChangeEvent event) {
         Message newMessage = (Message) event.getNewValue();
-        message.setValue(message.getValue() + "\n" +
-                         newMessage.getSender().getNickName() + "> "
-                         + newMessage.getContent());
+       if (newMessage.getReceiver() == null) {
+            message.setValue(message.getValue() + "\n" +
+                    newMessage.getSender().getNickName() + "> "
+                    + newMessage.getContent());
+        }
     }
 
-    private void onNewUser(PropertyChangeEvent event) {
-
-        List<User> newList = messageModel.getUsers();
-        // List<User> logList = messageModel.getUsers();
-        // users.add(((List<User>) event.getNewValue()).get(((List<User>) event.getNewValue()).size() -1));
+    private void onUserListModified(PropertyChangeEvent event) {
         users.clear();
-        for (User user : newList) {
-            System.out.println(user.getCreated() + " From main");
-            System.out.println(user.getID() + " From main");
+        for (User user : getSortedList()) {
             users.add(user);
-            //    loadOnlineUsers(event);
         }
     }
 
     public void loadOnlineUsers() {
-      //  List<User> list = new ArrayList<>()
-        users = FXCollections.observableArrayList(messageModel.getUsers());
-    //    for (User user: users) {
-    //        System.out.println(user.getNickName());
-     //   }
+        this.users = FXCollections.observableArrayList(getSortedList());
     }
 
-    public ObservableList<User> getOnlineUsers() {
+    public ObservableList<User> getUsers() {
         return users;
     }
 
     public void sendMessage(String text) {
-        messageModel.sendMessage(text);
+        messageModel.newMessage(text, null);
     }
 
     public StringProperty messageProperty() {
         return message;
     }
 
-    //   public void send() {
-  //      messageModel.send();
-  //  }
+    private List<User> getSortedList() {
+        List<User> newList = messageModel.getUsers();
+        Collections.sort(newList, (User u1, User u2) ->{
+            return u1.getNickName().compareToIgnoreCase(u2.getNickName());
+        });
+        return newList;
+    }
 
- //   public void loadOnlineUsers() {
-  //  }
+    public void userLeft() {
+        messageModel.userLeft();
+    }
 
-  //  public ObservableList<String> getOnlineUsers() {
-   // }
+    public void userSelected(User userSelected) {
+    }
+
+    public User getIdentity() {
+        return messageModel.getIdentity();
+    }
 }

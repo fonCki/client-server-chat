@@ -16,8 +16,8 @@ public class SettingsViewModel {
     }
 
 
-    public void onNewUser() {
-        messageModel.onNewUser(nickName.getValue());
+    public void newUser() {
+        messageModel.newUser(nickName.getValue());
     }
 
 

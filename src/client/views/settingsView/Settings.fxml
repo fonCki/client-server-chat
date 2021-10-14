@@ -10,6 +10,6 @@
    <children>
       <TextField fx:id="nickNameTextField" layoutX="127.0" layoutY="76.0" />
       <Text layoutX="56.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nickName" wrappingWidth="59.40966796875" />
-      <Button layoutX="334.0" layoutY="77.0" mnemonicParsing="false" onAction="#onOkButton" text="Ok" />
+      <Button  fx:id="onOkButton" layoutX="334.0" layoutY="77.0" mnemonicParsing="false" onAction="#onOkButton" text="Ok" />
    </children>
 </AnchorPane>

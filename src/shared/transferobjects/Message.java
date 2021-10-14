@@ -38,6 +38,18 @@ public class Message implements Serializable {
         return dateTime;
     }
 
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Message)) {
+            return false;
+        } else {
+            return ((Message) obj).content == this.content &&
+                    ((Message) obj).sender == this.sender &&
+                    ((Message) obj).receiver == this.receiver &&
+                    ((Message) obj).dateTime == this.dateTime;
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Message{" +

@@ -4,6 +4,7 @@ import client.networking.Client;
 import com.sun.javafx.geom.transform.Identity;
 import com.sun.javafx.tk.DummyToolkit;
 import shared.transferobjects.Message;
+import shared.transferobjects.Request;
 import shared.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
@@ -20,18 +21,21 @@ public class MessageModelManager implements MessageModel{
     public MessageModelManager(Client client) {
         this.support = new PropertyChangeSupport(this);
         this.client = client;
-        client.addListener("USER_LIST_MODIFIED", this::onNewUser);
+        client.addListener("USER_LIST_MODIFIED", this::onUserListModified);
         client.addListener("NEW_MESSAGE", this::onNewMessage);
-        client.addListener("NEW_USER", this::onNewName);
+       // client.addListener("NEW_PRIVATE_MESSAGE", this::onNewMessage);
+        client.addListener("NEW_USER", this::onNewUser);
     }
 
-    private void onNewName(PropertyChangeEvent event) {
+    private void onUserListModified(PropertyChangeEvent event) {
+        support.firePropertyChange(event);
+    }
+
+    private void onNewUser(PropertyChangeEvent event) {
         identity = ((User) event.getNewValue()).copy();
-        System.out.println("My identity is:" + identity);
     }
 
     private void onNewMessage(PropertyChangeEvent event) {
-        System.out.println("de aca " + (Message) event.getNewValue());
         support.firePropertyChange(event);
     }
 
@@ -42,19 +46,22 @@ public class MessageModelManager implements MessageModel{
     }
 
     @Override
-    public void onNewUser(String nickName) {
-        client.startClient(nickName);
+    public void userLeft() {
+        client.userLeft(identity);
     }
 
     @Override
-    public void sendMessage(String text) {
-        Message newMessage = new Message(text, identity);
+    public void newUser(String nickName) {
+        client.newUser(nickName);
+        client.startClient(identity);
+    }
+
+    @Override
+    public void newMessage(String text, User receiver) {
+        Message newMessage = new Message(text, identity, receiver);
         client.newMessage(newMessage);
     }
 
-    private void onNewUser(PropertyChangeEvent event) {
-        support.firePropertyChange(event);
-   }
 
     @Override
     public void addListener(String evt, PropertyChangeListener listener) {
@@ -67,4 +74,7 @@ public class MessageModelManager implements MessageModel{
 
     }
 
+    public User getIdentity() {
+        return identity;
+    }
 }

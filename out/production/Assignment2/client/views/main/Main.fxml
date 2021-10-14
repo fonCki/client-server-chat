@@ -14,8 +14,8 @@
           <TableColumn fx:id="usersTableColumn" editable="false" prefWidth="213.0" sortable="false" text="C1" />
         </columns>
       </TableView>
-      <TextArea fx:id="messageTextArea" editable="false" layoutX="10.0" layoutY="14.0" prefHeight="339.0" prefWidth="433.0" />
+      <TextArea fx:id="messageTextArea" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="343.0" prefWidth="433.0" />
       <TextField fx:id="messageTextField" layoutX="14.0" layoutY="354.0" prefHeight="46.0" prefWidth="332.0" />
-      <Button layoutX="364.0" layoutY="364.0" mnemonicParsing="false" onAction="#onSend" text="send" />
+      <Button fx:id="onSendButton" layoutX="364.0" layoutY="364.0" mnemonicParsing="false" onAction="#onSend" text="send" />
    </children>
 </AnchorPane>

@@ -7,11 +7,9 @@ import shared.util.Subject;
 import java.util.List;
 
 public interface Client extends Subject {
-  //  void send(Request request);
-    public List<User> getUsers();
-    public void startClient(String nickName);
-
-    boolean onNewUser(String nickName);
-
+    public void startClient(User nickName);
+    void newUser(String nickName);
     void newMessage(Message message);
+    public List<User> getUsers();
+    void userLeft(User identity);
 }

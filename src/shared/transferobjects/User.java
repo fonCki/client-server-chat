@@ -51,6 +51,17 @@ public class User implements Serializable {
         return new User(nickName, ip, created, ID);
     }
 
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User)) {
+            return false;
+        } else {
+            return ((User) obj).nickName == this.nickName &&
+                    ((User) obj).ip == this.ip &&
+                    ((User) obj).created == this.created &&
+                    ((User) obj).ID == this.ID;
+        }
+    }
+
     @Override
     public String toString() {
         return "User{" +

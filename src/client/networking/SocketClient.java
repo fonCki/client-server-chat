@@ -1,6 +1,6 @@
 package client.networking;
 
-import shared.port;
+import shared.Connection;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
@@ -21,57 +21,52 @@ public class SocketClient implements Client{
     }
 
     @Override
-    public void startClient(String nickName) {
+    public void startClient(User user) {
         try {
-            Socket socket = new Socket("localhost", port.PORT);
+            Socket socket = new Socket(Connection.HOST, Connection.PORT);
             ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
 
-            if (onNewUser(nickName))
-                new Thread(() -> listenToServer(socket, outToServer, inFromServer)).start();
+            new Thread(() -> listenToServer(user, outToServer, inFromServer)).start();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void listenToServer(User user, ObjectOutputStream outToServer, ObjectInputStream inFromServer) {
+        try {
+            outToServer.writeObject(new Request("LISTENER", user.getID()));
+            while (true) {
+                Request request = (Request) inFromServer.readObject();
+                support.firePropertyChange(request.getType(), null, request.getArg());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("DISCONNECTED!");
     }
 
 
 
+
     @Override
-    public boolean onNewUser(String nickName) {
+    public void newUser(String nickName) {
         try {
             Request response = request("NEW_USER", nickName);
             support.firePropertyChange("NEW_USER", null, response.getArg());
-            return response.getType().equals("CONNECTED");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     @Override
     public void newMessage(Message message) {
         try {
             Request response = request("NEW_MESSAGE", message);
-        //    support.firePropertyChange(response.getType(), null, response.getArg());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private void listenToServer(Socket socket, ObjectOutputStream outToServer, ObjectInputStream inFromServer) {
-        try {
-            outToServer.writeObject(new Request("LISTENER", null));
-            while (true) {
-                Request request = (Request) inFromServer.readObject();
-                //System.out.println((Message) request.getArg() + "otro gato");
-                support.firePropertyChange(request.getType(), null, request.getArg());
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println("DISCONECTED!");
     }
 
 
@@ -86,9 +81,18 @@ public class SocketClient implements Client{
         return null;
     }
 
+    @Override
+    public void userLeft(User identity) {
+        try {
+            Request response = request("USER_LEFT", identity);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private Request request(String type, Object arg) throws IOException, ClassNotFoundException {
-        Socket socket = new Socket("localhost", port.PORT);
+        Socket socket = new Socket(Connection.HOST, Connection.PORT);
         ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
         outToServer.writeObject(new Request(type, arg));

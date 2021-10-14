@@ -5,6 +5,7 @@ import shared.transferobjects.User;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +25,24 @@ public class MessageManagerImp implements MessageManager{
     }
 
     @Override
+    public void removeUser(String ID) {
+        for (User user:users) {
+            if (user.getID().equals(ID)) {
+                users.remove(user);
+                break;
+            }
+        }
+        support.firePropertyChange("USER_LIST_MODIFIED", null, null);
+        System.out.println(users);
+    }
+
+    @Override
     public void newMessage(Message message) {
         support.firePropertyChange("NEW_MESSAGE", null, message);
     }
 
-    public synchronized void addUser(User user) {
+    public synchronized void newUser(User user) {
         users.add(user);
-      //  for (User user: users) {
-        //    System.out.println(user.getNickName());
-       // }
         support.firePropertyChange("USER_LIST_MODIFIED", null, null);
     }
 
