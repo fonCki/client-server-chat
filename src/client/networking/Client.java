@@ -4,6 +4,7 @@ import shared.transferobjects.Message;
 import shared.transferobjects.User;
 import shared.util.Subject;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public interface Client extends Subject {

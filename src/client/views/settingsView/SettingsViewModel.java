@@ -4,6 +4,7 @@ import client.model.MessageModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 
 public class SettingsViewModel {
@@ -16,7 +17,7 @@ public class SettingsViewModel {
     }
 
 
-    public void newUser() {
+    public void newUser( ) {
         messageModel.newUser(nickName.getValue());
     }
 

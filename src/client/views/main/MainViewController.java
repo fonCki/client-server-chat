@@ -5,50 +5,58 @@ import client.core.ViewModelFactory;
 import client.views.ViewController;
 import client.views.main.tools.TabList;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import shared.transferobjects.Message;
 import shared.transferobjects.User;
+
+import java.beans.PropertyChangeEvent;
+
 
 public class MainViewController implements ViewController {
     ViewHandler viewHandler;
     MainViewModel mainViewModel;
+    private TabList tabList;
 
-    //@FXML private TextArea messageTextArea;
-    @FXML private TextField messageTextField;
-    @FXML private TableView<User> usersTableView;
-    @FXML private TableColumn<String, User> usersTableColumn;
-    @FXML private Button onSendButton;
 
-    @FXML private TabPane tabPane;
-    private TabList tabList = new TabList();
+    @FXML
+    private TableView<User> usersTableView;
+    @FXML
+    private TableColumn<String, User> nickNameTableColumn;
+    @FXML
+    private TabPane tabPane;
 
+    SingleSelectionModel<Tab> selectionModel;
 
     @Override
-    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver) {
+    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver, Message initMessage) {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModelFactory.getMainViewModel();
+        tabList = new TabList();
+
         mainViewModel.loadOnlineUsers();
         usersTableView.setItems(mainViewModel.getUsers());
-        usersTableColumn.setCellValueFactory(new PropertyValueFactory<>("nickName"));
+        nickNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nickName"));
 
-     //   Tab allTab = new Tab("ALL");
-     //   tabPane.getTabs().add(new Tab("ALL"));
-       // messageTextArea.textProperty().bind(mainViewModel.messageProperty());
-        onSendButton.disableProperty().bind(Bindings.isEmpty(messageTextField.textProperty()));
-        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel = tabPane.getSelectionModel();
 
+        mainViewModel.addListener("CREATE_NEW_TAB", this::checkNewTab);
+
+        //Create the main tab
+        Tab mainTab = new Tab("ALL");
+        tabPane.getTabs().add(mainTab);
+        viewHandler.openTabView(mainTab, null, null);
+        mainTab.closableProperty().setValue(false);
+        //
 
 
         stage.setTitle(mainViewModel.getIdentity().getNickName());
+
+
 
         usersTableView.setRowFactory(userTableView -> {
             TableRow<User> row = new TableRow<>();
@@ -58,29 +66,25 @@ public class MainViewController implements ViewController {
                     if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
 
                         if (!(tabList.existTab(userSelected.getID()))) {
+
                             tabList.addTab(userSelected);
                             tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
+                            viewHandler.openTabView(tabList.getTab(userSelected.getID()), userSelected, null);
+                        } else {
+                            selectionModel.select(tabList.getTab(userSelected.getID()));
                         }
-                        tabList.getTab(userSelected.getID()).setOnCloseRequest( event -> {
+                        tabList.getTab(userSelected.getID()).setOnCloseRequest(event -> {
                             tabList.removeTab(userSelected.getID());
+                            System.out.println("removed");
 
                         });
-                        selectionModel.select(tabList.getTab(userSelected.getID()));
+
+
                     }
                 }
             });
             return row;
         });
-
-
-
-        messageTextField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                onSend(null);
-            }
-        });
-
-
 
 
         stage.setOnCloseRequest((new EventHandler<WindowEvent>() {
@@ -93,10 +97,30 @@ public class MainViewController implements ViewController {
         }));
     }
 
-    public void onSend(ActionEvent actionEvent) {
-        if (!(messageTextField.getText() == null)  &&
-                (!(messageTextField.getText() == "")))
-        mainViewModel.sendMessage(messageTextField.getText());
-        messageTextField.clear();
+    private void checkNewTab(PropertyChangeEvent event) {
+        Message newMessage = (Message) event.getNewValue();
+        System.out.println(newMessage);
+        User userSelected = newMessage.getSender();
+        if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
+
+            if (!(tabList.existTab(userSelected.getID()))) {
+                Platform.runLater(() -> createTab(userSelected, newMessage)
+            );
+            } else {
+                selectionModel.select(tabList.getTab(userSelected.getID()));
+                System.out.println("Hpla");
+            }
+
+        }
+    }
+
+    private void createTab(User userSelected, Message newMessage) {
+        tabList.addTab(userSelected);
+        tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
+        viewHandler.openTabView(tabList.getTab(userSelected.getID()), userSelected, newMessage);
+        tabList.getTab(userSelected.getID()).setOnCloseRequest(evt -> {
+            tabList.removeTab(userSelected.getID());
+            System.out.println("Removed 2");
+        });
     }
 }

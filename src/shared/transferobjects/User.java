@@ -55,10 +55,10 @@ public class User implements Serializable {
         if (!(obj instanceof User)) {
             return false;
         } else {
-            return ((User) obj).nickName == this.nickName &&
-                    ((User) obj).ip == this.ip &&
-                    ((User) obj).created == this.created &&
-                    ((User) obj).ID == this.ID;
+            return ((User) obj).nickName.equals(this.nickName) &&
+                    ((User) obj).ip.equals(this.ip) &&
+                    ((User) obj).created.equals(this.created)  &&
+                    ((User) obj).ID.equals(this.ID);
         }
     }
 

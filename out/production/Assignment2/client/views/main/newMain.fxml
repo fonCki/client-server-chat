@@ -7,51 +7,110 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="901.0" prefWidth="1404.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.views.main.MainViewController">
    <children>
-      <VBox prefHeight="901.0" prefWidth="366.0">
+      <VBox fx:id="usersVBox" prefHeight="901.0" prefWidth="366.0">
          <children>
-            <TableView fx:id="usersTableView" prefHeight="959.0" prefWidth="366.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="136.0" prefWidth="366.0" spacing="20.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Steve Jobs">
+                     <font>
+                        <Font name="Apple Braille" size="37.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="23.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../design/pngfind.com-edit-icon-png-704184.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <TableView fx:id="usersTableView" prefHeight="769.0" prefWidth="248.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="usersTableColumn" prefWidth="365.0" text="C1" />
+                <TableColumn fx:id="nickNameTableColumn" prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
               </columns>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </TableView>
          </children>
-      </VBox>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin></VBox>
       <BorderPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
          <center>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="SELECTED_TAB" BorderPane.alignment="CENTER">
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
               <tabs>
-                <Tab fx:id="allTab" text="ALL">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TextArea fx:id="messageTextArea" layoutX="14.0" layoutY="14.0" prefHeight="730.0" prefWidth="1014.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
+                     <!--
+                        <BorderPane style="-fx-background-color: blue;">
+                           <right>
+                              <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="249.0" spacing="20.0" style="-fx-background-color: yellow;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Circle fill="DODGERBLUE" radius="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bill Gates">
+                                       <font>
+                                          <Font name="Apple Braille" size="28.0" />
+                                       </font>
+                                    </Text>
+                                    <Button mnemonicParsing="false" text="Play Tic-Tac-Toe!!" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </VBox>
+                           </right>
+                           <bottom>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextArea fx:id="messageTextField" prefHeight="60.0" prefWidth="774.0" styleClass="text-area" stylesheets="@../../../design/style.css" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </TextArea>
+                                    <Button fx:id="onSendButton" mnemonicParsing="false" onAction="#onSend" text="Send" HBox.hgrow="NEVER">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </bottom>
+                           <center>
+                              <TextArea fx:id="messageTextArea" prefHeight="200.0" prefWidth="616.0" styleClass="text-area" stylesheets="@../../../design/style.css" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </TextArea>
+                           </center>
+                        </BorderPane>
+                        -->
               </tabs>
             </TabPane>
          </center>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextField fx:id="messageTextField" prefHeight="60.0" prefWidth="1038.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="onSendButton" mnemonicParsing="false" onAction="#onSend" prefHeight="25.0" prefWidth="200.0" text="Send" />
-               </children>
-               <BorderPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </BorderPane.margin>
-            </HBox>
-         </bottom>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
       </BorderPane>
    </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
 </HBox>

@@ -7,6 +7,7 @@ import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
 
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

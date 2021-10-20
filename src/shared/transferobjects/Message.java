@@ -42,10 +42,10 @@ public class Message implements Serializable {
         if (!(obj instanceof Message)) {
             return false;
         } else {
-            return ((Message) obj).content == this.content &&
-                    ((Message) obj).sender == this.sender &&
-                    ((Message) obj).receiver == this.receiver &&
-                    ((Message) obj).dateTime == this.dateTime;
+            return ((Message) obj).content.equals(content) &&
+                    ((Message) obj).sender.equals(this.sender) &&
+                    ((Message) obj).receiver.equals(this.receiver) &&
+                    ((Message) obj).dateTime.equals(this.dateTime);
         }
     }
 

@@ -3,6 +3,7 @@ package client.model;
 import shared.transferobjects.User;
 import shared.util.Subject;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public interface MessageModel extends Subject {

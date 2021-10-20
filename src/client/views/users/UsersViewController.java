@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import shared.transferobjects.Message;
 import shared.transferobjects.User;
 
 public class UsersViewController implements ViewController {
@@ -18,7 +19,7 @@ public class UsersViewController implements ViewController {
     @FXML private TableColumn<String, User> usersTableColumn;
 
     @Override
-    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver) {
+    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver, Message initMessage) {
         //this.usersViewModel = usersViewModel;
        // usersViewModel.loadOnlineUsers();
         //usersTableView.setItems(usersViewModel.getOnlineUsers());

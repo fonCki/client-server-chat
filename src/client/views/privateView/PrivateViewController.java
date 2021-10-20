@@ -3,6 +3,7 @@ package client.views.privateView;
 import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
+import com.sun.scenario.effect.DropShadow;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,7 +12,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import shared.transferobjects.Message;
 import shared.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
@@ -26,9 +31,9 @@ public class PrivateViewController implements ViewController {
 
 
 
-    @Override
-    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver) {
 
+    @Override
+    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver, Message initMessage) {
         this.receiver = receiver;
         this.privateViewModel = viewModelFactory.getPrivateViewModel();
         privateViewModel.setReceiver(receiver);

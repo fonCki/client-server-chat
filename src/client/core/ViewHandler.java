@@ -2,13 +2,14 @@ package client.core;
 
 import client.core.designControl.PrivateStage;
 import client.views.ViewController;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import shared.transferobjects.Message;
 import shared.transferobjects.User;
 
 import java.io.IOException;
@@ -50,13 +51,48 @@ public class ViewHandler {
      //   stage1.show();
     }
 
+        /*
+    public void openTabView(Tab tab) {
+        try {
+            tab.setContent((Node) FXMLLoader.load(this.getClass().getResource("../views/main/Tab.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    */
+
+    public void openTabView(Tab tab, User receiver, Message initMessage) {
+
+        try {
+
+            //FXMLLoader fxmlLoader = new FXMLLoader();
+            //fxmlLoader.load(getClass().getResource("../views/main/Tab.fxml"));
+            //ViewController viewController = (ViewController) fxmlLoader.getController();
+          //  tab.setContent((Node) getRoot("../views/main/Tab.fxml",null));
+          //  viewController.init(viewHandler, viewModelFactory, stage, null);
+
+            //...
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/tabView/Tab.fxml"));
+            tab.setContent(loader.load());
+            ViewController viewController = loader.getController();
+            viewController.init(this, viewModelFactory, stage, receiver, initMessage);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Parent getRoot(String path, User userSelected) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(path));
             root = loader.load();
             ViewController viewController = loader.getController();
-            viewController.init(this, viewModelFactory, stage, userSelected);
+            viewController.init(this, viewModelFactory, stage, userSelected, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,6 +122,9 @@ public class ViewHandler {
         }));
 
     }
+
+
+
 /*
         if (stage1 == null) {
             stage1

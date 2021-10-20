@@ -4,6 +4,7 @@ import server.model.MessageManager;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
+import shared.transferobjects.UserRequest;
 
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
@@ -83,7 +84,7 @@ public class SocketHandler implements Runnable{
 
     private void runNewUser(String nickName) throws IOException {
         String ip = (((InetSocketAddress) socket.getRemoteSocketAddress()).getAddress()).toString().replace("/","");
-        User newUser = new User(nickName,ip);
+        User newUser = new User(nickName, ip);
         messageManager.newUser(newUser);
         outToClient.writeObject(new Request("CONNECTED", newUser.copy()));
     }
