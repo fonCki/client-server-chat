@@ -1,5 +1,11 @@
 package shared.transferobjects;
 
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +15,7 @@ public class User implements Serializable {
     private String ip;
     private LocalDateTime created = LocalDateTime.now();
     private String ID;
+
 
     public User(String nickName) {
         this.ID = "#ID" +  ip.replace(".","") +  created.getNano() + (int) (nickName.hashCode() * Math.random());

@@ -5,10 +5,12 @@ import client.views.main.tools.TabList;
 import com.sun.source.tree.IfTree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
 import shared.util.Subject;
 
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -80,6 +82,9 @@ public class MainViewModel implements Subject {
         return messageModel.getIdentity();
     }
 
+    public Image getAvatar(){
+        return messageModel.getAvatar();
+    }
 
     @Override
     public void addListener(String evt, PropertyChangeListener listener) {

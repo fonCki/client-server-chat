@@ -54,10 +54,17 @@ public class SettingsViewController implements ViewController {
     @Override
     public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver, Message initMessage) {
         bufferedImage = null;
-            avatar = new Image(getClass().getResourceAsStream("../../../design/Steve_Jobs_icon-icons.com_54132.png"));
-            circle.setFill(new ImagePattern(avatar));
+        avatar = new Image(getClass().getResourceAsStream("../../../design/Steve_Jobs_icon-icons.com_54132.png"));
+        circle.setFill(new ImagePattern(avatar));
+       // File newFile = new File
+            try {
+                bufferedImage = ImageIO.read(getClass().getResource("../../../design/avatar_default.jpeg"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        final FileChooser fileChooser = new FileChooser();
+
+         FileChooser fileChooser = new FileChooser();
             openButton.setOnAction((final ActionEvent e) -> {
                         File file = fileChooser.showOpenDialog(stage);
                         if (file != null) {
@@ -69,6 +76,11 @@ public class SettingsViewController implements ViewController {
                             }
                         } else {
                             file = new File("../../../design/avatar_default.jpeg");
+                            try {
+                                bufferedImage = ImageIO.read(file);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                         ImageView imageView1 = new ImageView(avatar);
                         circle.setFill(new ImagePattern(avatar));
@@ -94,7 +106,7 @@ public class SettingsViewController implements ViewController {
 
     public void onOkButton(ActionEvent actionEvent) {
         if (!nickNameTextField.textProperty().equals("")) {
-            settingsViewModel.newUser();
+            settingsViewModel.newUser(bufferedImage);
             viewHandler.openMainView();
         }
     }

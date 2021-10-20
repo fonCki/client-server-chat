@@ -3,9 +3,12 @@ package client.model;
 import client.networking.Client;
 import com.sun.javafx.geom.transform.Identity;
 import com.sun.javafx.tk.DummyToolkit;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
+
 
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
@@ -18,6 +21,8 @@ public class MessageModelManager implements MessageModel{
     private PropertyChangeSupport support;
     private Client client;
     private User identity = null;
+    private BufferedImage bufferedAvatar;
+    private Image avatar;
 
     public MessageModelManager(Client client) {
         this.support = new PropertyChangeSupport(this);
@@ -34,6 +39,7 @@ public class MessageModelManager implements MessageModel{
 
     private void onNewUser(PropertyChangeEvent event) {
         identity = ((User) event.getNewValue()).copy();
+        this.avatar = SwingFXUtils.toFXImage(bufferedAvatar, null);
     }
 
     private void onNewMessage(PropertyChangeEvent event) {
@@ -52,7 +58,8 @@ public class MessageModelManager implements MessageModel{
     }
 
     @Override
-    public void newUser(String nickName) {
+    public void newUser(String nickName, BufferedImage bufferedImage) {
+        this.bufferedAvatar = bufferedImage;
         client.newUser(nickName);
         client.startClient(identity);
     }
@@ -77,5 +84,8 @@ public class MessageModelManager implements MessageModel{
 
     public User getIdentity() {
         return identity;
+    }
+    public Image getAvatar() {
+        return avatar;
     }
 }

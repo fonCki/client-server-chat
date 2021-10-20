@@ -14,8 +14,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -31,7 +33,7 @@ public class TabViewController implements ViewController {
     @FXML private Button onSendButton;
     @FXML private VBox vBox;
     @FXML private Text receiverNickNameText;
-   // @FXML private Circle avatarCircle;
+    @FXML private Circle avatarCircle;
 
     private User receiver;
     private TabViewModel tabViewModel;
@@ -94,6 +96,8 @@ public class TabViewController implements ViewController {
             vBox.setManaged(false);
         } else {
             receiverNickNameText.setText(receiver.getNickName());
+            Image avatarImg = new Image(getClass().getResourceAsStream("../../../design/avatar_default.jpeg"));
+            avatarCircle.setFill(new ImagePattern(avatarImg));
         }
 
         messageTextField.setOnKeyPressed(keyEvent -> {

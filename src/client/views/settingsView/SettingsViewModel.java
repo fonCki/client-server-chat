@@ -17,8 +17,8 @@ public class SettingsViewModel {
     }
 
 
-    public void newUser( ) {
-        messageModel.newUser(nickName.getValue());
+    public void newUser(BufferedImage bufferedImage ) {
+        messageModel.newUser(nickName.getValue(), bufferedImage);
     }
 
 

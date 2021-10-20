@@ -6,6 +6,8 @@ import shared.transferobjects.Request;
 import shared.transferobjects.User;
 import shared.transferobjects.UserRequest;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;

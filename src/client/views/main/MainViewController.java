@@ -9,6 +9,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import shared.transferobjects.Message;
@@ -23,12 +26,11 @@ public class MainViewController implements ViewController {
     private TabList tabList;
 
 
-    @FXML
-    private TableView<User> usersTableView;
-    @FXML
-    private TableColumn<String, User> nickNameTableColumn;
-    @FXML
-    private TabPane tabPane;
+    @FXML private TableView<User> usersTableView;
+    @FXML private TableColumn<String, User> nickNameTableColumn;
+    @FXML private TabPane tabPane;
+    @FXML private Circle avatarCircle;
+    @FXML private Text nickNameText;
 
     SingleSelectionModel<Tab> selectionModel;
 
@@ -37,7 +39,6 @@ public class MainViewController implements ViewController {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModelFactory.getMainViewModel();
         tabList = new TabList();
-
         mainViewModel.loadOnlineUsers();
         usersTableView.setItems(mainViewModel.getUsers());
         nickNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nickName"));
@@ -55,7 +56,8 @@ public class MainViewController implements ViewController {
 
 
         stage.setTitle(mainViewModel.getIdentity().getNickName());
-
+        nickNameText.setText(mainViewModel.getIdentity().getNickName());
+        avatarCircle.setFill(new ImagePattern(mainViewModel.getAvatar()));
 
 
         usersTableView.setRowFactory(userTableView -> {
@@ -66,20 +68,9 @@ public class MainViewController implements ViewController {
                     if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
 
                         if (!(tabList.existTab(userSelected.getID()))) {
-
-                            tabList.addTab(userSelected);
-                            tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
-                            viewHandler.openTabView(tabList.getTab(userSelected.getID()), userSelected, null);
-                        } else {
+                            createTab(userSelected, null);
                             selectionModel.select(tabList.getTab(userSelected.getID()));
                         }
-                        tabList.getTab(userSelected.getID()).setOnCloseRequest(event -> {
-                            tabList.removeTab(userSelected.getID());
-                            System.out.println("removed");
-
-                        });
-
-
                     }
                 }
             });
