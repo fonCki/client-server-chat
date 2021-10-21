@@ -36,6 +36,7 @@ public class MainViewController implements ViewController {
 
     @Override
     public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Stage stage, User receiver, Message initMessage) {
+        //Initialize
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModelFactory.getMainViewModel();
         tabList = new TabList();
@@ -45,6 +46,7 @@ public class MainViewController implements ViewController {
 
         selectionModel = tabPane.getSelectionModel();
 
+        //Listen
         mainViewModel.addListener("CREATE_NEW_TAB", this::checkNewTab);
 
         //Create the main tab
@@ -55,18 +57,19 @@ public class MainViewController implements ViewController {
         //
 
 
-        stage.setTitle(mainViewModel.getIdentity().getNickName());
+        //set the design elements
+        stage.setTitle("Welcome back " + mainViewModel.getIdentity().getNickName());
         nickNameText.setText(mainViewModel.getIdentity().getNickName());
         avatarCircle.setFill(new ImagePattern(mainViewModel.getAvatar()));
 
 
+        //set the user's table selection
         usersTableView.setRowFactory(userTableView -> {
             TableRow<User> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getClickCount() == 2 && (!row.isEmpty())) {
                     User userSelected = row.getItem();
                     if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
-
                         if (!(tabList.existTab(userSelected.getID()))) {
                             createTab(userSelected, null);
                             selectionModel.select(tabList.getTab(userSelected.getID()));
@@ -77,7 +80,7 @@ public class MainViewController implements ViewController {
             return row;
         });
 
-
+        //set the close event
         stage.setOnCloseRequest((new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
@@ -88,30 +91,29 @@ public class MainViewController implements ViewController {
         }));
     }
 
-    private void checkNewTab(PropertyChangeEvent event) {
+    // check new tab
+    private void checkNewTab(PropertyChangeEvent event) { // THIS METHOD IS EQUAL TO DOUBLE CLICK EVENT, JOIN THEM!
         Message newMessage = (Message) event.getNewValue();
-        System.out.println(newMessage);
         User userSelected = newMessage.getSender();
         if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
-
             if (!(tabList.existTab(userSelected.getID()))) {
                 Platform.runLater(() -> createTab(userSelected, newMessage)
             );
             } else {
                 selectionModel.select(tabList.getTab(userSelected.getID()));
-                System.out.println("Hpla");
             }
 
         }
     }
 
+
+    // create new tab
     private void createTab(User userSelected, Message newMessage) {
         tabList.addTab(userSelected);
         tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
         viewHandler.openTabView(tabList.getTab(userSelected.getID()), userSelected, newMessage);
         tabList.getTab(userSelected.getID()).setOnCloseRequest(evt -> {
             tabList.removeTab(userSelected.getID());
-            System.out.println("Removed 2");
         });
     }
 }

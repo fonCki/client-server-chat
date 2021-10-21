@@ -17,7 +17,5 @@ public class ChatApp extends Application {
         ViewHandler viewHandler = new ViewHandler(viewModelFactory);
         // Running Handler///
         viewHandler.openSettingsView();
-       // viewHandler.openMainView();
-
     }
 }

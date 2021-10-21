@@ -1,13 +1,10 @@
 package client.networking;
 
-import shared.Connection;
+import shared.util.Connection;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
-import shared.transferobjects.UserRequest;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;

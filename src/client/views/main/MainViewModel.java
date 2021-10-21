@@ -1,16 +1,12 @@
 package client.views.main;
 
 import client.model.MessageModel;
-import client.views.main.tools.TabList;
-import com.sun.source.tree.IfTree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
 import shared.util.Subject;
-
-import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -36,18 +32,10 @@ public class MainViewModel implements Subject {
         Message newMessage = (Message) event.getNewValue();
         if (newMessage.getReceiver() != null) {
             if (newMessage.getReceiver().equals(messageModel.getIdentity())) {
-                support.firePropertyChange("CREATE_NEW_TAB",null, newMessage);
+                support.firePropertyChange("CREATE_NEW_TAB", null, newMessage);
             }
         }
-
-      //  if (!(tabList.existTab(newMessage.getReceiver().getID()))) {
-       //     tabList.addTab(newMessage.getReceiver());
-           // tabPane.getTabs().add(tabList.getTab(userSelected.getID()));
-           // viewHandler.openTabView(tabList.getTab(userSelected.getID()), userSelected);
-        } //else {
-           // selectionModel.select(tabList.getTab(userSelected.getID()));
-    //    }
-    //}
+    }
 
 
     private void onUserListModified(PropertyChangeEvent event) {
@@ -57,7 +45,7 @@ public class MainViewModel implements Subject {
         }
     }
 
-    public void loadOnlineUsers() {
+    public void loadOnlineUsers() { //CHECK THIS, MAYBE PUT IN THE CONSTRUCTOR
         this.users = FXCollections.observableArrayList(getSortedList());
     }
 

@@ -1,9 +1,5 @@
 ///////////////Button/////////////////////////
 
-.parent {
-    -fx-background-color:  #FFF;
-}
-
 .background{
     -fx-background-color: #333645;
 }
@@ -20,8 +16,6 @@
     -fx-opacity: 0.2;
     -fx-graphic: url('camera-image-icon-2.jpg-4.png');
     -fx-graphic-size:16px 16px;
-   /* -fx-background-color: #transparent; */
-
 }
 
 .main {

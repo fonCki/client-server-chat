@@ -1,15 +1,10 @@
 package client.model;
 
 import client.networking.Client;
-import com.sun.javafx.geom.transform.Identity;
-import com.sun.javafx.tk.DummyToolkit;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import shared.transferobjects.Message;
-import shared.transferobjects.Request;
 import shared.transferobjects.User;
-
-
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -20,16 +15,16 @@ public class MessageModelManager implements MessageModel{
 
     private PropertyChangeSupport support;
     private Client client;
-    private User identity = null;
+    private User identity;
     private BufferedImage bufferedAvatar;
-    private Image avatar;
+    private Image avatar; // Fix this
 
     public MessageModelManager(Client client) {
-        this.support = new PropertyChangeSupport(this);
         this.client = client;
+        this.support = new PropertyChangeSupport(this);
+        identity = null;
         client.addListener("USER_LIST_MODIFIED", this::onUserListModified);
         client.addListener("NEW_MESSAGE", this::onNewMessage);
-       // client.addListener("NEW_PRIVATE_MESSAGE", this::onNewMessage);
         client.addListener("NEW_USER", this::onNewUser);
     }
 
@@ -70,6 +65,12 @@ public class MessageModelManager implements MessageModel{
         client.newMessage(newMessage);
     }
 
+    public User getIdentity() {
+        return identity;
+    }
+    public Image getAvatar() {
+        return avatar;
+    }
 
     @Override
     public void addListener(String evt, PropertyChangeListener listener) {
@@ -82,10 +83,4 @@ public class MessageModelManager implements MessageModel{
 
     }
 
-    public User getIdentity() {
-        return identity;
-    }
-    public Image getAvatar() {
-        return avatar;
-    }
 }

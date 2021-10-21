@@ -13,6 +13,5 @@ public interface MessageModel extends Subject {
     List<User> getUsers();
     void userLeft();
     User getIdentity();
-
-    Image getAvatar();
+    Image getAvatar(); // To fix
 }

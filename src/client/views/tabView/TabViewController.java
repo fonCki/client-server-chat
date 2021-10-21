@@ -3,17 +3,11 @@ package client.views.tabView;
 import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
-import client.views.main.tools.MessageList;
-import client.views.main.tools.MessageListItem;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -25,7 +19,7 @@ import shared.transferobjects.Message;
 import shared.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
+
 
 public class TabViewController implements ViewController {
     @FXML private TextArea messageTextArea;
@@ -47,30 +41,25 @@ public class TabViewController implements ViewController {
     }
 
     private void setText(Message message) {
-        System.out.println(message + " lalaland");
         if (message != null) {
-            System.out.println("Hiiiiiiii");
             messageContent += "\n" +
                     message.getSender().getNickName() + "> " +
                     message.getContent();
-            messageTextArea.setText(messageContent);
         } else {
             messageContent = "";
-            messageTextArea.setText(messageContent);
-            System.out.println("HUUUUUU");
         }
-
+        messageTextArea.setText(messageContent);
     }
 
     private void onNewMessage(PropertyChangeEvent event) {
         Message newMessage = (Message) event.getNewValue();
         if ((newMessage.getReceiver() == null) && receiver == null) {
-            setText(newMessage);
+            setText(newMessage); // Send to ALL
         } else if (newMessage.getReceiver() != null && receiver != null) {
             if (newMessage.getReceiver().equals(receiver) && newMessage.getSender().equals(tabViewModel.getIdentity())) {
-                setText(newMessage);
+                setText(newMessage); // Send private if I sent
             } else if (newMessage.getReceiver().equals(tabViewModel.getIdentity()) && newMessage.getSender().equals(receiver)) {
-                setText(newMessage);
+                setText(newMessage); // Send private sent to me
             }
 
         }
@@ -89,8 +78,7 @@ public class TabViewController implements ViewController {
 
         onSendButton.disableProperty().bind(Bindings.isEmpty(messageTextField.textProperty()));
 
-
-
+        //Prepare the tab to be All
         if (receiver == null) {
             vBox.setVisible(false);
             vBox.setManaged(false);
@@ -114,4 +102,5 @@ public class TabViewController implements ViewController {
             tabViewModel.sendMessage(messageTextField.getText(), receiver);
             messageTextField.clear();
     }
+
 }

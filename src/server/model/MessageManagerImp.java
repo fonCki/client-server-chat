@@ -5,7 +5,6 @@ import shared.transferobjects.User;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class MessageManagerImp implements MessageManager{
     }
 
     @Override
-    public void removeUser(String ID) {
+    public synchronized void removeUser(String ID) {
         for (User user:users) {
             if (user.getID().equals(ID)) {
                 users.remove(user);
@@ -33,7 +32,6 @@ public class MessageManagerImp implements MessageManager{
             }
         }
         support.firePropertyChange("USER_LIST_MODIFIED", null, null);
-        System.out.println(users);
     }
 
     @Override

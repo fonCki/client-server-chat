@@ -1,14 +1,8 @@
 package shared.transferobjects;
 
-
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 public class User implements Serializable {
     private String nickName;

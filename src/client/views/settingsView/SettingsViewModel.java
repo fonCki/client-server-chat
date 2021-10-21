@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 
 public class SettingsViewModel {
     private MessageModel messageModel;

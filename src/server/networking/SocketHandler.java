@@ -4,10 +4,6 @@ import server.model.MessageManager;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
-import shared.transferobjects.UserRequest;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,8 +36,6 @@ public class SocketHandler implements Runnable{
             Request request = (Request) inFromClient.readObject();
             switch (request.getType()) {
                 case "LISTENER": {
-                 //   Thread.currentThread().setName((String) request.getArg());
-                 //   System.out.println(Thread.currentThread().getName());
                     runListeners((String) request.getArg());
                     break;
                 }
@@ -81,7 +75,7 @@ public class SocketHandler implements Runnable{
     }
 
     private void runGetUsers() throws IOException {
-        outToClient.writeObject(new Request("FETCH_USERS", messageManager.getUsers()));
+        outToClient.writeObject(new Request("GET_USERS", messageManager.getUsers()));
     }
 
     private void runNewUser(String nickName) throws IOException {

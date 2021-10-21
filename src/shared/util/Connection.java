@@ -1,4 +1,4 @@
-package shared;
+package shared.util;
 
 import javax.sound.sampled.Port;
 
