@@ -42,6 +42,7 @@ public class SettingsViewController implements ViewController {
         this.viewHandler = viewHandler;
         nickNameTextField.textProperty().bindBidirectional(settingsViewModel.nickNameProperty());
 
+
         avatar = new Image(getClass().getResourceAsStream("../../../design/Steve_Jobs_icon-icons.com_54132.png"));
         circle.setFill(new ImagePattern(avatar));
         try {
@@ -50,6 +51,9 @@ public class SettingsViewController implements ViewController {
             e.printStackTrace();
         }
         FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg");
+        fileChooser.getExtensionFilters().add(extFilter);
+
         openButton.setOnAction((final ActionEvent e) -> {
                         File file = fileChooser.showOpenDialog(stage);
                         if (file != null) {

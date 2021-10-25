@@ -1,6 +1,6 @@
 package client.core;
 
-import client.views.main.MainViewModel;
+import client.views.mainView.MainViewModel;
 import client.views.settingsView.SettingsViewModel;
 import client.views.tabView.TabViewModel;
 

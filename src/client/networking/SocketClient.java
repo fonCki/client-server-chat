@@ -56,7 +56,7 @@ public class SocketClient implements Client{
             Request response = request("NEW_USER", nickName);
             support.firePropertyChange("NEW_USER", null, response.getArg());
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Connection Error");
         }
     }
 

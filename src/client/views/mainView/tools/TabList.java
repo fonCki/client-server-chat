@@ -1,4 +1,4 @@
-package client.views.main.tools;
+package client.views.mainView.tools;
 
 import javafx.scene.control.Tab;
 import shared.transferobjects.User;

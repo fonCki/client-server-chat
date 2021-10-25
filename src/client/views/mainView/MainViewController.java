@@ -1,9 +1,9 @@
-package client.views.main;
+package client.views.mainView;
 
 import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
-import client.views.main.tools.TabList;
+import client.views.mainView.tools.TabList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

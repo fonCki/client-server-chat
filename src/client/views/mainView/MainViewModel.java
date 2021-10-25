@@ -1,4 +1,4 @@
-package client.views.main;
+package client.views.mainView;
 
 import client.model.MessageModel;
 import javafx.collections.FXCollections;

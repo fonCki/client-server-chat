@@ -21,7 +21,7 @@ public class ViewHandler {
     }
 
     public void openMainView(){
-        Scene scene = new Scene(getRoot("../views/main/Main.fxml", null));
+        Scene scene = new Scene(getRoot("../views/mainView/Main.fxml", null));
         stage.setScene(scene);
         stage.show();
     }
