@@ -12,16 +12,17 @@ public class User implements Serializable {
 
 
     public User(String nickName) {
-        this.ID = "#ID" +  ip.replace(".","") +  created.getNano() + (int) (nickName.hashCode() * Math.random());
         this.nickName = nickName;
         this.ip = "0.0.0.0";
+        this.ID = "#ID" +  ip.replace(".","") +  created.getNano() + (int) (nickName.hashCode() * Math.random());
     }
 
     public User(String nickName, String ip) {
-        this.ID = "#ID" +  ip.replace(".","") +  created.getNano() + (int) (nickName.hashCode() * Math.random());
-        this.ID.hashCode();
         this.nickName = nickName;
         this.ip = ip;
+        this.ID = "#ID" +  ip.replace(".","") +  created.getNano() + (int) (nickName.hashCode() * Math.random());
+        this.ID.hashCode();
+
     }
 
     private User(String nickName, String ip, LocalDateTime created, String ID) {

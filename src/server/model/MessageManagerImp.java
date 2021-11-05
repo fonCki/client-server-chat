@@ -19,7 +19,7 @@ public class MessageManagerImp implements MessageManager{
         users = new ArrayList<>();
     }
 
-    public synchronized List<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 

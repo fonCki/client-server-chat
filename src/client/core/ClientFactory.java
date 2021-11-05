@@ -1,13 +1,13 @@
 package client.core;
 
 import client.networking.Client;
-import client.networking.SocketClient;
+import client.networking.RMIClient;
 
 public class ClientFactory {
     private Client client;
 
     public ClientFactory() {
-        client = new SocketClient();
+        client = new RMIClient();
     }
 
     public Client getClient() {

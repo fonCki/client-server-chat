@@ -1,6 +1,7 @@
 package client.views.mainView;
 
 import client.model.MessageModel;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -10,6 +11,7 @@ import shared.util.Subject;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class MainViewModel implements Subject {
 
 
     public MainViewModel(MessageModel messageModel) {
+        this.users = new SimpleListProperty<>();
         this.support = new PropertyChangeSupport(this);
         this.messageModel = messageModel;
         messageModel.addListener("USER_LIST_MODIFIED", this::onUserListModified);
@@ -39,11 +42,11 @@ public class MainViewModel implements Subject {
 
 
     private void onUserListModified(PropertyChangeEvent event) {
+        List<User> sortedList = getSortedList();
+        System.out.println(sortedList);
         users.clear();
-        for (User user : getSortedList()) {
-            users.add(user);
+        users.add(new User("caamano"));
         }
-    }
 
     public void loadOnlineUsers() { //CHECK THIS, MAYBE PUT IN THE CONSTRUCTOR
         this.users = FXCollections.observableArrayList(getSortedList());
@@ -55,9 +58,11 @@ public class MainViewModel implements Subject {
 
     private List<User> getSortedList() {
         List<User> newList = messageModel.getUsers();
-        Collections.sort(newList, (User u1, User u2) ->{
-            return u1.getNickName().compareToIgnoreCase(u2.getNickName());
-        });
+        if (newList != null) {
+            Collections.sort(newList, (User u1, User u2) ->{
+                return u1.getNickName().compareToIgnoreCase(u2.getNickName());
+            });
+        }
         return newList;
     }
 
