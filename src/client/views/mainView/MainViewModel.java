@@ -11,7 +11,6 @@ import shared.util.Subject;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,27 +41,28 @@ public class MainViewModel implements Subject {
 
 
     private void onUserListModified(PropertyChangeEvent event) {
-        List<User> sortedList = getSortedList();
-        System.out.println(sortedList);
-        users.clear();
-        users.add(new User("caamano"));
+        if (!users.isEmpty()) {
+            users.clear();
+            for (User user: getSortedList()) {
+                users.add(user);
+            }
         }
+    }
 
     public void loadOnlineUsers() { //CHECK THIS, MAYBE PUT IN THE CONSTRUCTOR
         this.users = FXCollections.observableArrayList(getSortedList());
     }
 
     public ObservableList<User> getUsers() {
+
         return users;
     }
 
     private List<User> getSortedList() {
         List<User> newList = messageModel.getUsers();
-        if (newList != null) {
-            Collections.sort(newList, (User u1, User u2) ->{
-                return u1.getNickName().compareToIgnoreCase(u2.getNickName());
-            });
-        }
+        Collections.sort(newList, (User u1, User u2) ->{
+            return u1.getNickName().compareToIgnoreCase(u2.getNickName());
+        });
         return newList;
     }
 
@@ -90,3 +90,7 @@ public class MainViewModel implements Subject {
 
     }
 }
+
+
+
+

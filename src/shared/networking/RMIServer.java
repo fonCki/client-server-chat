@@ -12,6 +12,6 @@ public interface RMIServer extends Remote {
     void newMessage(Message message) throws RemoteException;
     List<User> getUsers() throws RemoteException;
     void removeUser(String ID) throws RemoteException;
-    void registerClient(ClientCallBack client) throws RemoteException;
+    void registerClient(ClientCallBack client, User identity) throws RemoteException;
    // void unRegisterClient(ClientCallBack client) throws RemoteException;
 }

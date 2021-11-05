@@ -26,7 +26,6 @@ public class RMIClient implements Client, ClientCallBack {
             UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (RMIServer) registry.lookup("MessageServer");
-            server.registerClient(this);
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
@@ -42,6 +41,7 @@ public class RMIClient implements Client, ClientCallBack {
         User identity = null;
         try {
             identity = server.newUser(nickName);
+            server.registerClient(this, identity.copy());
             support.firePropertyChange("NEW_USER", null, identity);
         } catch (RemoteException e) {
             System.out.println("couldn't create the user/");
@@ -80,11 +80,7 @@ public class RMIClient implements Client, ClientCallBack {
 
     @Override
     public void update(Request request) {
-        System.out.println("otro");
-        System.out.println(request.getType());
-        System.out.println(request.getArg());
         support.firePropertyChange(request.getType(), null, request.getArg());
-        System.out.println("paso");
     }
 
     @Override

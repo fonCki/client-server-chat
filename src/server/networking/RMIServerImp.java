@@ -52,50 +52,32 @@ public class RMIServerImp implements RMIServer {
     }
 
     @Override
-    public void registerClient(ClientCallBack client) {
+    public void registerClient(ClientCallBack client, User identity) {
         messageManager.addListener("USER_LIST_MODIFIED", event -> onListModified(event, client));
-        messageManager.addListener("NEW_MESSAGE", event -> onNewMessage(event, client));
+        messageManager.addListener("NEW_MESSAGE", event -> onNewMessage(event, client, identity.getID()));
     }
 
-    private void onNewMessage(PropertyChangeEvent event, ClientCallBack client) {
-        String ID = "";
+    private void onNewMessage(PropertyChangeEvent event, ClientCallBack client, String ID) {
         if (((Message) event.getNewValue()).getReceiver() == null) {
-            System.out.println("New Message");
             try {
                 client.update(new Request(event.getPropertyName(), event.getNewValue()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            //  outToClient.writeObject(new Request(event.getPropertyName(), event.getNewValue()));
         } else if (((Message) event.getNewValue()).getReceiver().getID().equals(ID)  ||
                 ((Message) event.getNewValue()).getSender().getID().equals(ID))
-            System.out.println("new Messahhre");
-        //   outToClient.writeObject(new Request(event.getPropertyName(), event.getNewValue()));
-    }
-
-    private void onListModified(PropertyChangeEvent event, ClientCallBack client) {
-        System.out.println("YESSS, llegue aca");
-        System.out.println(event.getPropertyName());
-        System.out.println(event.getNewValue());
-        try {
-            client.update(new Request("USER_LIST_MODIFIED", null));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        /*
-        System.out.println(event.getPropertyName());
-        System.out.println(event.getNewValue());
         try {
             client.update(new Request(event.getPropertyName(), event.getNewValue()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        System.out.println("List Modified");
-        System.out.println(event.getPropertyName());
-        System.out.println(event.getNewValue());
-        System.out.println("++++++++++++++");
-        //   outToClient.writeObject(new Request(event.getPropertyName(), event.getNewValue()));
+    }
 
-         */
+    private void onListModified(PropertyChangeEvent event, ClientCallBack client) {
+        try {
+            client.update(new Request("USER_LIST_MODIFIED", null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
