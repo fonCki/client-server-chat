@@ -4,7 +4,6 @@ import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
 import javafx.beans.binding.Bindings;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,9 +14,9 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import shared.transferobjects.Avatar;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,10 +29,9 @@ public class SettingsViewController implements ViewController {
     @FXML private Button onOkButton;
     @FXML private Button openButton;
     @FXML private Circle circle;
-    public Image avatar;
+    private Avatar avatar;
+    private Image steveJobs;
     private BufferedImage bufferedImage = null;
-
-
 
 
     @Override
@@ -43,10 +41,11 @@ public class SettingsViewController implements ViewController {
         nickNameTextField.textProperty().bindBidirectional(settingsViewModel.nickNameProperty());
 
 
-        avatar = new Image(getClass().getResourceAsStream("../../../design/Steve_Jobs_icon-icons.com_54132.png"));
-        circle.setFill(new ImagePattern(avatar));
+        steveJobs = new Image(getClass().getResourceAsStream("../../../design/Steve_Jobs_icon-icons.com_54132.png"));
+        circle.setFill(new ImagePattern(steveJobs));
         try {
             bufferedImage = ImageIO.read(getClass().getResource("../../../design/avatar_default.jpeg"));
+            avatar = new Avatar(bufferedImage, "avatar_default.jpeg");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,12 +58,12 @@ public class SettingsViewController implements ViewController {
                         if (file != null) {
                             try {
                                 bufferedImage = ImageIO.read(file);
-                                avatar = SwingFXUtils.toFXImage(bufferedImage, null);
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
+                            avatar = new Avatar(bufferedImage, file.getName());
                         }
-                        circle.setFill(new ImagePattern(avatar));
+                        circle.setFill(new ImagePattern(avatar.getAvatar()));
                     });
 
         onOkButton.disableProperty().bind(Bindings.isEmpty(nickNameTextField.textProperty()));
@@ -79,7 +78,7 @@ public class SettingsViewController implements ViewController {
     public void onOkButton(ActionEvent actionEvent) {
         if (!(nickNameTextField.textProperty().getValue() == null)) {
             if (!(nickNameTextField.textProperty().getValue().equals(""))) {
-                settingsViewModel.newUser(bufferedImage);
+                settingsViewModel.newUser(avatar);
                 viewHandler.openMainView();
             }
         }

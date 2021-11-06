@@ -3,6 +3,7 @@ package client.views.settingsView;
 import client.model.MessageModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import shared.transferobjects.Avatar;
 
 import java.awt.image.BufferedImage;
 
@@ -16,8 +17,8 @@ public class SettingsViewModel {
     }
 
 
-    public void newUser(BufferedImage bufferedImage ) {
-        messageModel.newUser(nickName.getValue(), bufferedImage);
+    public void newUser(Avatar avatar) {
+        messageModel.newUser(nickName.getValue(), avatar);
     }
 
 

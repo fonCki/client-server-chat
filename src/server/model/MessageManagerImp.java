@@ -39,7 +39,7 @@ public class MessageManagerImp implements MessageManager{
         support.firePropertyChange("NEW_MESSAGE", null, message);
     }
 
-    public synchronized void newUser(User user) {
+    public synchronized void createUser(User user) {
         users.add(user);
         support.firePropertyChange("USER_LIST_MODIFIED", null, null);
     }

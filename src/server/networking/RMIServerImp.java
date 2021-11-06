@@ -3,11 +3,15 @@ package server.networking;
 import server.model.MessageManager;
 import shared.networking.ClientCallBack;
 import shared.networking.RMIServer;
+import shared.transferobjects.Avatar;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
 
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -29,16 +33,15 @@ public class RMIServerImp implements RMIServer {
     }
 
     @Override
-    public User newUser(String nickName) {
-        User newUser = new User(nickName);
-        messageManager.newUser(newUser);
+    public User createUser(String nickName, Avatar avatar) {
+        User newUser = new User(nickName, avatar);
+        messageManager.createUser(newUser);
         return newUser;
     }
 
     @Override
     public void newMessage(Message message) {
         messageManager.newMessage(message);
-
     }
 
     @Override
@@ -52,24 +55,30 @@ public class RMIServerImp implements RMIServer {
     }
 
     @Override
+    public void receiveImage(byte[] rawImage) {
+        try {
+            BufferedImage image = javax.imageio.ImageIO.read(new ByteArrayInputStream(rawImage));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // do whatever you wish with the image
+    }
+
+    @Override
     public void registerClient(ClientCallBack client, User identity) {
         messageManager.addListener("USER_LIST_MODIFIED", event -> onListModified(event, client));
         messageManager.addListener("NEW_MESSAGE", event -> onNewMessage(event, client, identity.getID()));
     }
 
     private void onNewMessage(PropertyChangeEvent event, ClientCallBack client, String ID) {
-        if (((Message) event.getNewValue()).getReceiver() == null) {
+        if ((((Message) event.getNewValue()).getReceiver() == null) ||
+                ((Message) event.getNewValue()).getReceiver().getID().equals(ID) ||
+                ((Message) event.getNewValue()).getSender().getID().equals(ID)) {
             try {
                 client.update(new Request(event.getPropertyName(), event.getNewValue()));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        } else if (((Message) event.getNewValue()).getReceiver().getID().equals(ID)  ||
-                ((Message) event.getNewValue()).getSender().getID().equals(ID))
-        try {
-            client.update(new Request(event.getPropertyName(), event.getNewValue()));
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
     }
 
@@ -80,4 +89,5 @@ public class RMIServerImp implements RMIServer {
             e.printStackTrace();
         }
     }
+
 }

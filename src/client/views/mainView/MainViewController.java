@@ -60,7 +60,7 @@ public class MainViewController implements ViewController {
         //set the design elements
         stage.setTitle("Welcome back " + mainViewModel.getIdentity().getNickName());
         nickNameText.setText(mainViewModel.getIdentity().getNickName());
-        avatarCircle.setFill(new ImagePattern(mainViewModel.getAvatar()));
+        avatarCircle.setFill(new ImagePattern(mainViewModel.getIdentity().getAvatar()));
 
 
         //set the user's table selection

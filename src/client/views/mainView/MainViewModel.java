@@ -75,9 +75,6 @@ public class MainViewModel implements Subject {
         return messageModel.getIdentity();
     }
 
-    public Image getAvatar(){
-        return messageModel.getAvatar();
-    }
 
     @Override
     public void addListener(String evt, PropertyChangeListener listener) {

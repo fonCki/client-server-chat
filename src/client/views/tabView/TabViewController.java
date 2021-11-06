@@ -4,6 +4,7 @@ import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
 import javafx.beans.binding.Bindings;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +19,10 @@ import javafx.stage.Stage;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
 
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 
 public class TabViewController implements ViewController {
@@ -84,8 +88,15 @@ public class TabViewController implements ViewController {
             vBox.setManaged(false);
         } else {
             receiverNickNameText.setText(receiver.getNickName());
-            Image avatarImg = new Image(getClass().getResourceAsStream("../../../design/avatar_default.jpeg"));
-            avatarCircle.setFill(new ImagePattern(avatarImg));
+            //Image avatarImg = new Image(getClass().getResourceAsStream("../../../design/avatar_default.jpeg"));
+           // BufferedImage bufferedAvatar = null;
+           // try {
+           //     bufferedAvatar = javax.imageio.ImageIO.read(new ByteArrayInputStream(receiver.getRawAvatar()));
+           //     avatarImg = SwingFXUtils.toFXImage(bufferedAvatar, null);
+          //  } catch (IOException e) {
+          //      e.printStackTrace();
+          //  }
+            avatarCircle.setFill(new ImagePattern(receiver.getAvatar()));
         }
 
         messageTextField.setOnKeyPressed(keyEvent -> {

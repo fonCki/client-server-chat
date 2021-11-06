@@ -7,7 +7,7 @@ import shared.util.Subject;
 import java.util.List;
 
 public interface MessageManager extends Subject {
-    void newUser(User user);
+    void createUser(User user);
     void newMessage(Message message);
     List<User> getUsers();
     void removeUser(String ID);

@@ -2,12 +2,13 @@ package client.networking;
 
 import shared.networking.ClientCallBack;
 import shared.networking.RMIServer;
+import shared.transferobjects.Avatar;
 import shared.transferobjects.Message;
 import shared.transferobjects.Request;
 import shared.transferobjects.User;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,32 +23,33 @@ public class RMIClient implements Client, ClientCallBack {
 
     public RMIClient() {
         this.support = new PropertyChangeSupport(this);
+    }
+
+    @Override
+    public void startClient(String nickName, Avatar avatar) {
         try {
             UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (RMIServer) registry.lookup("MessageServer");
+            createUser(nickName, avatar);
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void startClient(User user) {
-
-    }
-
-    @Override
-    public void newUser(String nickName) {
+    private void createUser(String nickName, Avatar avatar) {
         User identity = null;
         try {
-            identity = server.newUser(nickName);
+            identity = server.createUser(nickName, avatar);
             server.registerClient(this, identity.copy());
             support.firePropertyChange("NEW_USER", null, identity);
         } catch (RemoteException e) {
             System.out.println("couldn't create the user/");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
+
 
     @Override
     public void newMessage(Message message) {
@@ -78,6 +80,7 @@ public class RMIClient implements Client, ClientCallBack {
         }
     }
 
+
     @Override
     public void update(Request request) {
         support.firePropertyChange(request.getType(), null, request.getArg());
@@ -92,4 +95,6 @@ public class RMIClient implements Client, ClientCallBack {
     public void removeListener(String evt, PropertyChangeListener listener) {
         support.removePropertyChangeListener(evt, listener);
     }
+
+
 }

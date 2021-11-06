@@ -3,12 +3,15 @@ package client.model;
 import client.networking.Client;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import shared.transferobjects.Avatar;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class MessageModelManager implements MessageModel{
@@ -16,8 +19,6 @@ public class MessageModelManager implements MessageModel{
     private PropertyChangeSupport support;
     private Client client;
     private User identity;
-    private BufferedImage bufferedAvatar;
-    private Image avatar; // Fix this
 
     public MessageModelManager(Client client) {
         this.client = client;
@@ -34,7 +35,6 @@ public class MessageModelManager implements MessageModel{
 
     private void onNewUser(PropertyChangeEvent event) {
         identity = ((User) event.getNewValue()).copy();
-        this.avatar = SwingFXUtils.toFXImage(bufferedAvatar, null);
     }
 
     private void onNewMessage(PropertyChangeEvent event) {
@@ -53,10 +53,8 @@ public class MessageModelManager implements MessageModel{
     }
 
     @Override
-    public void newUser(String nickName, BufferedImage bufferedImage) {
-        this.bufferedAvatar = bufferedImage;
-        client.newUser(nickName);
-        client.startClient(identity);
+    public void newUser(String nickName, Avatar avatar) {
+        client.startClient(nickName, avatar);
     }
 
     @Override
@@ -67,9 +65,6 @@ public class MessageModelManager implements MessageModel{
 
     public User getIdentity() {
         return identity;
-    }
-    public Image getAvatar() {
-        return avatar;
     }
 
     @Override
