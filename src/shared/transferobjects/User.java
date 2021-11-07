@@ -1,6 +1,8 @@
 package shared.transferobjects;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

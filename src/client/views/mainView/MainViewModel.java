@@ -1,16 +1,21 @@
 package client.views.mainView;
 
 import client.model.MessageModel;
+import client.views.mainView.tools.UsersSimplified;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import shared.transferobjects.Message;
 import shared.transferobjects.User;
 import shared.util.Subject;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +24,7 @@ public class MainViewModel implements Subject {
     private PropertyChangeSupport support;
 
     private MessageModel messageModel;
-    private ObservableList<User> users;
+    private ObservableList<UsersSimplified> users;
 
 
     public MainViewModel(MessageModel messageModel) {
@@ -43,7 +48,7 @@ public class MainViewModel implements Subject {
     private void onUserListModified(PropertyChangeEvent event) {
         if (!users.isEmpty()) {
             users.clear();
-            for (User user: getSortedList()) {
+            for (UsersSimplified user: getSortedList()) {
                 users.add(user);
             }
         }
@@ -53,16 +58,23 @@ public class MainViewModel implements Subject {
         this.users = FXCollections.observableArrayList(getSortedList());
     }
 
-    public ObservableList<User> getUsers() {
-
+    public ObservableList<UsersSimplified> getSimplifiedUsers() {
         return users;
     }
 
-    private List<User> getSortedList() {
-        List<User> newList = messageModel.getUsers();
-        Collections.sort(newList, (User u1, User u2) ->{
+    public List<User> getUserList() {
+        return messageModel.getUsers();
+    }
+
+    private List<UsersSimplified> getSortedList() {
+        List<User> tempList = messageModel.getUsers();
+        Collections.sort(tempList, (User u1, User u2) ->{
             return u1.getNickName().compareToIgnoreCase(u2.getNickName());
         });
+        List<UsersSimplified> newList = new ArrayList<>();
+        for (User user: tempList) {
+            newList.add(new UsersSimplified(user));
+        }
         return newList;
     }
 

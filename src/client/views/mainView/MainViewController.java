@@ -4,11 +4,13 @@ import client.core.ViewHandler;
 import client.core.ViewModelFactory;
 import client.views.ViewController;
 import client.views.mainView.tools.TabList;
+import client.views.mainView.tools.UsersSimplified;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -26,8 +28,9 @@ public class MainViewController implements ViewController {
     private TabList tabList;
 
 
-    @FXML private TableView<User> usersTableView;
-    @FXML private TableColumn<String, User> nickNameTableColumn;
+    @FXML private TableView<UsersSimplified> usersTableView;
+    @FXML private TableColumn<UsersSimplified, String> nickNameTableColumn;
+    @FXML private TableColumn<UsersSimplified, Circle> avatarTableColumn;
     @FXML private TabPane tabPane;
     @FXML private Circle avatarCircle;
     @FXML private Text nickNameText;
@@ -41,8 +44,15 @@ public class MainViewController implements ViewController {
         this.mainViewModel = viewModelFactory.getMainViewModel();
         tabList = new TabList();
         mainViewModel.loadOnlineUsers();
-        usersTableView.setItems(mainViewModel.getUsers());
+        usersTableView.setItems(mainViewModel.getSimplifiedUsers());
+        for (UsersSimplified user: mainViewModel.getSimplifiedUsers()) {
+            System.out.println(user);
+        }
+
+        avatarTableColumn.setCellValueFactory(new PropertyValueFactory<>("circle"));
         nickNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nickName"));
+
+
 
         selectionModel = tabPane.getSelectionModel();
 
@@ -65,13 +75,18 @@ public class MainViewController implements ViewController {
 
         //set the user's table selection
         usersTableView.setRowFactory(userTableView -> {
-            TableRow<User> row = new TableRow<>();
+            TableRow<UsersSimplified> row = new TableRow<>();
             row.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getClickCount() == 2 && (!row.isEmpty())) {
-                    User userSelected = row.getItem();
+                    UsersSimplified userSelected = row.getItem();
                     if (!(userSelected.getID().equals(mainViewModel.getIdentity().getID()))) {
                         if (!(tabList.existTab(userSelected.getID()))) {
-                            createTab(userSelected, null);
+                            for (User user: mainViewModel.getUserList()) {
+                                if (userSelected.getID().equals(user.getID())) {
+                                      createTab(user, null);
+                                      break;
+                                }
+                            }
                             selectionModel.select(tabList.getTab(userSelected.getID()));
                         }
                     }

@@ -38,8 +38,9 @@
             </HBox>
             <TableView fx:id="usersTableView" prefHeight="769.0" prefWidth="248.0" styleClass="table-users" stylesheets="@../../../design/style.css" VBox.vgrow="ALWAYS">
               <columns>
+                <TableColumn fx:id="avatarTableColumn" minWidth="0.0" prefWidth="87.0" />
                 <TableColumn fx:id="nickNameTableColumn" editable="false" prefWidth="257.0" style="fx-font-size: 24px;" />
-                <TableColumn minWidth="0.0" prefWidth="87.0" />
+                  <TableColumn fx:id="statusTableColumn" prefWidth="75.0" text="Column X" />
               </columns>
                <VBox.margin>
                   <Insets top="20.0" />

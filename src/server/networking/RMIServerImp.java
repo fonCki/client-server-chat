@@ -55,16 +55,6 @@ public class RMIServerImp implements RMIServer {
     }
 
     @Override
-    public void receiveImage(byte[] rawImage) {
-        try {
-            BufferedImage image = javax.imageio.ImageIO.read(new ByteArrayInputStream(rawImage));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // do whatever you wish with the image
-    }
-
-    @Override
     public void registerClient(ClientCallBack client, User identity) {
         messageManager.addListener("USER_LIST_MODIFIED", event -> onListModified(event, client));
         messageManager.addListener("NEW_MESSAGE", event -> onNewMessage(event, client, identity.getID()));
