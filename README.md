@@ -2,7 +2,7 @@
 # Chat System
 
 
-This is a 2nd-semester assignment a simple chat system.
+This is a 2nd-semester assignment. A simple chat system.
 ## Appendix
 
 
