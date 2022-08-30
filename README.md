@@ -2,7 +2,7 @@
 # Chat System
 
 
-This is a 2nd-semester assignment. A simple chat system.
+This is a 2nd-semester assignment—a chat system connecting client and server, with the server being multithreaded to handle multiple clients..
 ## Appendix
 
 
